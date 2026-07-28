@@ -1,49 +1,80 @@
+<div align="center">
+
+[**English**](./README.md) · [繁體中文](./README.zh-TW.md)
+
 # Google Maps Default Language
 
-A Tampermonkey userscript that manages the default language of Google Maps on desktop.
+**Keep Google Maps in your preferred language—automatically.**
 
-## Features
+[![Greasy Fork](https://img.shields.io/badge/Greasy%20Fork-Install%20Userscript-670000?style=for-the-badge)](https://greasyfork.org/zh-TW/scripts/588875-google-maps-%E9%A0%90%E8%A8%AD%E8%AA%9E%E8%A8%80)
 
-- On the first run:
-  - If Google Maps is already using a Chinese locale (`zh-*`), the current locale is preserved.
-  - If Google Maps is using a non-Chinese locale, the script switches it to Traditional Chinese by adding `hl=zh-TW` to the URL.
-- On subsequent visits, the script automatically applies the remembered language.
-- When you manually select another language from the Google Maps language menu, that language becomes the new default.
-- The Tampermonkey menu includes commands to:
-  - Set the default language to Traditional Chinese.
-  - Clear the remembered language.
+[![Version](https://img.shields.io/greasyfork/v/588875?label=version)](https://greasyfork.org/zh-TW/scripts/588875-google-maps-%E9%A0%90%E8%A8%AD%E8%AA%9E%E8%A8%80)
+[![Total installs](https://img.shields.io/greasyfork/dt/588875?label=installs)](https://greasyfork.org/zh-TW/scripts/588875-google-maps-%E9%A0%90%E8%A8%AD%E8%AA%9E%E8%A8%80)
 
-Google's official desktop workflow is **Google Maps → Menu → Language → select a language**. The script detects the resulting `hl` URL parameter and page-language changes.
+</div>
 
-## Installation
+## Overview
+
+Google Maps normally chooses its display language from your browser, account, or regional settings. This Tampermonkey userscript makes that behavior predictable:
+
+- If Google Maps is not in Chinese on the first run, it switches to **Traditional Chinese (`zh-TW`)**.
+- If Google Maps is already using a Chinese locale (`zh-*`), that locale is preserved.
+- If you later choose another language from the Google Maps language menu, the script remembers it as your new default.
+- Your preference is applied automatically whenever you open Google Maps.
+
+## Install
+
+### Greasy Fork (recommended)
+
+1. Install a userscript manager such as [Tampermonkey](https://www.tampermonkey.net/).
+2. Open the [Google Maps Default Language page on Greasy Fork](https://greasyfork.org/zh-TW/scripts/588875-google-maps-%E9%A0%90%E8%A8%AD%E8%AA%9E%E8%A8%80).
+3. Click **Install this script**.
+
+### Manual installation
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/).
 2. Open the Tampermonkey dashboard and create a new userscript.
 3. Copy the entire contents of [`google-maps-default-language.user.js`](./google-maps-default-language.user.js) into the editor.
-4. Save the userscript.
-5. Reopen [Google Maps](https://www.google.com/maps).
+4. Save the script and reopen [Google Maps](https://www.google.com/maps).
 
 ## How It Works
 
-- The preferred language is stored with Tampermonkey's `GM_setValue` API.
-- The script does not change the global language setting of your Google Account.
-- Automatic language switching uses `location.replace()`, so it does not add an extra entry to the browser history.
-- Both regular page loads and Google Maps SPA URL or `<html lang>` changes are monitored.
-- User interactions are tracked briefly to distinguish a manual language change from the script's own automatic redirect.
+| Situation | Result |
+| --- | --- |
+| First visit in a non-Chinese language | Switches to Traditional Chinese (`zh-TW`) |
+| First visit in any Chinese locale | Preserves the current Chinese locale |
+| Later visits | Applies the remembered language |
+| Manual language change in Google Maps | Saves the selected language as the new default |
+
+The script monitors the Google Maps `hl` URL parameter, `<html lang>` changes, and language-selection navigation. The preference is stored locally through Tampermonkey's `GM_setValue` API.
+
+## Changing or Resetting the Default
+
+You can change the language normally from **Google Maps → Menu → Language**. The script will remember your selection.
+
+You can also open the Tampermonkey menu while viewing Google Maps and choose:
+
+- **將預設語言設為繁體中文** — set Traditional Chinese as the default.
+- **清除已記住的語言** — clear the saved preference and run first-time detection again.
 
 ## Supported Pages
 
-The userscript runs on:
-
 - `https://www.google.com/maps*`
 - `https://maps.google.com/*`
-- Google Maps pages on regional Google domains, such as `google.com.tw` or `google.co.jp`
+- Regional Google Maps domains such as `google.com.tw` and `google.co.jp`
 
-## Resetting the Language
+## Privacy
 
-Open the Tampermonkey extension menu while viewing Google Maps, then select either:
+- No data is collected or transmitted.
+- The preferred language is stored locally by your userscript manager.
+- The script does not modify your Google Account's global language setting.
 
-- **Set default language to Traditional Chinese**
-- **Clear remembered language**
+## Technical Notes
 
-The actual command labels are displayed in Traditional Chinese by the userscript.
+- Automatic switching uses `location.replace()`, avoiding an extra browser-history entry.
+- Regular page loads and Google Maps SPA navigation are both handled.
+- Short-lived interaction markers distinguish manual language changes from automatic redirects.
+
+## License
+
+No license has been specified yet.
