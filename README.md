@@ -77,4 +77,4 @@ You can also open the Tampermonkey menu while viewing Google Maps and choose:
 
 ## License
 
-No license has been specified yet.
+This project is released under the [MIT License](./LICENSE).

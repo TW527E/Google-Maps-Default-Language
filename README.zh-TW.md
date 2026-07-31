@@ -77,4 +77,4 @@ Google Maps 通常會依據瀏覽器、Google 帳戶或地區設定決定顯示�
 
 ## 授權
 
-目前尚未指定授權條款。
+本專案採用 [MIT License](./LICENSE) 授權。
