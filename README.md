@@ -1,5 +1,3 @@
-<div align="center">
-
 [**English**](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/README.md) · [繁體中文](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/README.zh-TW.md)
 
 # Google Maps Default Language
@@ -10,8 +8,6 @@
 
 [![Version](https://img.shields.io/greasyfork/v/588875?label=version)](https://greasyfork.org/zh-TW/scripts/588875-google-maps-%E9%A0%90%E8%A8%AD%E8%AA%9E%E8%A8%80)
 [![Total installs](https://img.shields.io/greasyfork/dt/588875?label=installs)](https://greasyfork.org/zh-TW/scripts/588875-google-maps-%E9%A0%90%E8%A8%AD%E8%AA%9E%E8%A8%80)
-
-</div>
 
 ## Overview
 

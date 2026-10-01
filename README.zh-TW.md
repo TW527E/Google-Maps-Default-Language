@@ -1,5 +1,3 @@
-<div align="center">
-
 [English](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/README.md) · [**繁體中文**](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/README.zh-TW.md)
 
 # Google Maps 預設語言
@@ -10,8 +8,6 @@
 
 [![版本](https://img.shields.io/greasyfork/v/588875?label=%E7%89%88%E6%9C%AC)](https://greasyfork.org/zh-TW/scripts/588875-google-maps-%E9%A0%90%E8%A8%AD%E8%AA%9E%E8%A8%80)
 [![總安裝數](https://img.shields.io/greasyfork/dt/588875?label=%E5%AE%89%E8%A3%9D%E6%95%B8)](https://greasyfork.org/zh-TW/scripts/588875-google-maps-%E9%A0%90%E8%A8%AD%E8%AA%9E%E8%A8%80)
-
-</div>
 
 ## 簡介
 
