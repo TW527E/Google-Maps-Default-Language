@@ -1,6 +1,6 @@
 <div align="center">
 
-[**English**](./README.md) · [繁體中文](./README.zh-TW.md)
+[**English**](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/README.md) · [繁體中文](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/README.zh-TW.md)
 
 # Google Maps Default Language
 
@@ -34,7 +34,7 @@ Google Maps normally chooses its display language from your browser, account, or
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/).
 2. Open the Tampermonkey dashboard and create a new userscript.
-3. Copy the entire contents of [`google-maps-default-language.user.js`](./google-maps-default-language.user.js) into the editor.
+3. Copy the entire contents of [`google-maps-default-language.user.js`](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/google-maps-default-language.user.js) into the editor.
 4. Save the script and reopen [Google Maps](https://www.google.com/maps).
 
 ## How It Works
@@ -77,4 +77,4 @@ You can also open the Tampermonkey menu while viewing Google Maps and choose:
 
 ## License
 
-This project is released under the [MIT License](./LICENSE).
+This project is released under the [MIT License](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/LICENSE).
