@@ -1,6 +1,6 @@
 <div align="center">
 
-[English](./README.md) · [**繁體中文**](./README.zh-TW.md)
+[English](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/README.md) · [**繁體中文**](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/README.zh-TW.md)
 
 # Google Maps 預設語言
 
@@ -34,7 +34,7 @@ Google Maps 通常會依據瀏覽器、Google 帳戶或地區設定決定顯示�
 
 1. 安裝 [Tampermonkey](https://www.tampermonkey.net/)。
 2. 開啟 Tampermonkey 管理面板並建立新的使用者腳本。
-3. 將 [`google-maps-default-language.user.js`](./google-maps-default-language.user.js) 的全部內容貼入編輯器。
+3. 將 [`google-maps-default-language.user.js`](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/google-maps-default-language.user.js) 的全部內容貼入編輯器。
 4. 儲存腳本，然後重新開啟 [Google Maps](https://www.google.com/maps)。
 
 ## 運作方式
@@ -77,4 +77,4 @@ Google Maps 通常會依據瀏覽器、Google 帳戶或地區設定決定顯示�
 
 ## 授權
 
-本專案採用 [MIT License](./LICENSE) 授權。
+本專案採用 [MIT License](https://github.com/TW527E/Google-Maps-Default-Language/blob/main/LICENSE) 授權。
