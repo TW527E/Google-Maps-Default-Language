@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Google Maps 預設語言
 // @namespace    https://github.com/local/Google-Maps-Default-Language
-// @version      1.0.0
+// @version      1.0.1
 // @description  首次使用時將非中文的 Google Maps 切換成繁體中文，之後記住使用者在 Google Maps 內手動選擇的語言。
-// @author       Codex
+// @author       TW527E
 // @match        https://www.google.com/maps*
 // @match        https://maps.google.com/*
 // @include      /^https:\/\/www\.google\.[^/]+\/maps(?:\/|\?|$)/
@@ -12,6 +12,7 @@
 // @grant        GM_setValue
 // @grant        GM_deleteValue
 // @grant        GM_registerMenuCommand
+// @license      MIT
 // ==/UserScript==
 
 (function () {
@@ -119,6 +120,12 @@
         const urlLanguage = getUrlLanguage(location.href);
 
         if (urlLanguage && sameLanguage(urlLanguage, language)) {
+            return;
+        }
+
+        // 頁面已經是目標語言時不必重新載入。若 Google 在轉址時拿掉 hl，
+        // 只看網址會每次載入都再 replace() 一次，形成無限重新整理。
+        if (!urlLanguage && sameLanguage(getDocumentLanguage(), language)) {
             return;
         }
 
