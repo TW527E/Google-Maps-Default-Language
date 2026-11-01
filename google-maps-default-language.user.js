@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Google Maps 預設語言
+// @name:en      Google Maps Default Language
 // @namespace    https://github.com/local/Google-Maps-Default-Language
 // @version      1.0.1
 // @description  首次使用時將非中文的 Google Maps 切換成繁體中文，之後記住使用者在 Google Maps 內手動選擇的語言。
