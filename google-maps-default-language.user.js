@@ -2,13 +2,13 @@
 // @name         Google Maps 預設語言
 // @name:en      Google Maps Default Language
 // @namespace    https://github.com/local/Google-Maps-Default-Language
-// @version      1.0.1
+// @version      1.0.2
 // @description  首次使用時將非中文的 Google Maps 切換成繁體中文，之後記住使用者在 Google Maps 內手動選擇的語言。
 // @description:en On first use, switch non-Chinese Google Maps to Traditional Chinese, then remember language changes made in Google Maps.
 // @author       TW527E
 // @match        https://www.google.com/maps*
 // @match        https://maps.google.com/*
-// @include      /^https:\/\/www\.google\.[^/]+\/maps(?:\/|\?|$)/
+// @include      /^https:\/\/www\.google\.(?:com|[a-z]{2}|com?\.[a-z]{2})\/maps(?:\/|\?|$)/
 // @run-at       document-start
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -61,11 +61,10 @@
         }
 
         if (preferred) {
-            // 若語言選單沒有把 hl 放進網址，等新頁面的 <html lang>
-            // 出現後再判斷，避免在它出現前立刻切回舊偏好。
+            // 網址沒有 hl 時，等新頁面的 <html lang> 出現後再判斷：頁面可能
+            // 本來就是偏好語言，不必轉址；語言選單也可能沒有把 hl 放進網址。
             if (
                 !urlLanguage &&
-                hasRecentUserInteraction() &&
                 !documentLanguage &&
                 document.readyState === 'loading'
             ) {
@@ -144,18 +143,23 @@
     function installUserInteractionTracking() {
         document.addEventListener('click', (event) => {
             if (!event.isTrusted) return;
-
-            markUserInteraction();
+            // 中鍵或按住修飾鍵通常是開新分頁，不會改變這一頁的語言。
+            if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+                return;
+            }
 
             const destination = getMapsDestinationFromEvent(event);
-            const selectedLanguage = destination
-                ? getUrlLanguage(destination.href)
-                : null;
-
-            if (selectedLanguage) {
-                savePreference(selectedLanguage);
-                clearUserInteraction();
+            if (!destination) {
+                markUserInteraction();
+                return;
             }
+
+            const selectedLanguage = getUrlLanguage(destination.href);
+            if (selectedLanguage && isLanguageOnlyChange(destination)) {
+                savePreference(selectedLanguage);
+            }
+            // 一般地點或分享連結即使帶有 hl，也不是使用者在選語言。
+            clearUserInteraction();
         }, true);
 
         document.addEventListener('submit', (event) => {
@@ -251,8 +255,23 @@
     }
 
     function isGoogleMapsUrl(url) {
-        const googleHost = /^(?:www|maps)\.google\.[a-z.]+$/i.test(url.hostname);
-        return googleHost && (url.hostname.startsWith('maps.') || url.pathname.startsWith('/maps'));
+        const googleHost = /^(?:www|maps)\.google\.(?:com|[a-z]{2}|com?\.[a-z]{2})$/i.test(url.hostname);
+        return url.protocol === 'https:' && googleHost &&
+            (url.hostname.startsWith('maps.') || url.pathname.startsWith('/maps'));
+    }
+
+    /** 連結只改了 hl，其餘網址與目前頁面相同：這才是語言選單的切換。 */
+    function isLanguageOnlyChange(destination) {
+        if (destination.origin !== location.origin || destination.pathname !== location.pathname) {
+            return false;
+        }
+        const strip = (url) => {
+            const params = new URLSearchParams(url.search);
+            params.delete('hl');
+            params.sort();
+            return params.toString();
+        };
+        return strip(destination) === strip(new URL(location.href));
     }
 
     function getUrlLanguage(urlValue) {
@@ -306,17 +325,35 @@
         if (normalized) GM_setValue(PREFERENCE_KEY, normalized);
     }
 
+    // 瀏覽器封鎖網站儲存時 sessionStorage 會拋出錯誤；跨頁標記只是輔助，
+    // 失效時仍照常套用偏好。
+    function writeSessionValue(key, value) {
+        try {
+            sessionStorage.setItem(key, JSON.stringify(value));
+        } catch {
+            // 儲存不可用：略過標記。
+        }
+    }
+
+    function removeSessionValue(key) {
+        try {
+            sessionStorage.removeItem(key);
+        } catch {
+            // 儲存不可用：沒有東西要清除。
+        }
+    }
+
     function markAutomaticRedirect(language, href) {
-        sessionStorage.setItem(REDIRECT_KEY, JSON.stringify({
+        writeSessionValue(REDIRECT_KEY, {
             language,
             href,
             timestamp: Date.now(),
-        }));
+        });
     }
 
     function consumeAutomaticRedirectMarker(currentLanguage) {
         const marker = readSessionValue(REDIRECT_KEY);
-        sessionStorage.removeItem(REDIRECT_KEY);
+        removeSessionValue(REDIRECT_KEY);
 
         return Boolean(
             marker &&
@@ -327,9 +364,9 @@
     }
 
     function markUserInteraction() {
-        sessionStorage.setItem(INTERACTION_KEY, JSON.stringify({
+        writeSessionValue(INTERACTION_KEY, {
             timestamp: Date.now(),
-        }));
+        });
     }
 
     function hasRecentUserInteraction() {
@@ -340,14 +377,15 @@
     }
 
     function clearUserInteraction() {
-        sessionStorage.removeItem(INTERACTION_KEY);
+        removeSessionValue(INTERACTION_KEY);
     }
 
     function readSessionValue(key) {
         try {
-            return JSON.parse(sessionStorage.getItem(key) || 'null');
+            const value = JSON.parse(sessionStorage.getItem(key) || 'null');
+            return value && typeof value.timestamp === 'number' ? value : null;
         } catch {
-            sessionStorage.removeItem(key);
+            removeSessionValue(key);
             return null;
         }
     }
